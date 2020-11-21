@@ -9,15 +9,13 @@ from tkinter import messagebox
 import sounddevice as sd
 import soundfile as sf
 from lyrics_extractor import SongLyrics
-import Recommenders as Recommenders
-import Evaluation as Evaluation
 from dotenv import load_dotenv
 load_dotenv()
 import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
 
 
-
+#keys for lyrics extractor
 api_key = "AIzaSyC5dvhCUZawlFulTZfwhSG3mPs979LN8uA"
 cse_key = "4a730f5a78fe71353"
 
@@ -131,7 +129,7 @@ class MusicPlayer:
 
         data = extract_lyrics.get_lyrics(so_name)
 
-        l = Message(top, text = data.split('\n'))
+        l = Message(top, text = data)
         l.pack()
 
 
