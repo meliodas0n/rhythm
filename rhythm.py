@@ -21,11 +21,14 @@ cse_key = "4a730f5a78fe71353"
 
 root = Tk()
 
+WIDTH = root.winfo_screenwidth()
+HEIGHT = root.winfo_screenheight()
+
 class MusicPlayer:
     def __init__(self, root):
         self.root = root
         self.root.title("Music Player")
-        self.root.geometry(f"{root.winfo_screenwidth()}x{root.winfo_screenheight()}+0+0")
+        self.root.geometry(f"{WIDTH}x{HEIGHT}+0+0")
         self.root.resizable(True, True)
         pygame.init()
         pygame.mixer.init()
@@ -34,26 +37,26 @@ class MusicPlayer:
 
         #creating track frame
         trackframe = LabelFrame(self.root, text = "Song Track", font =("times new roman", 16, "italic"), bg = "black", fg = "white", bd = 5, relief = GROOVE, cursor = "arrow")
-        trackframe.place(x = 0, y = 0, width = 1440, height = 810)
+        trackframe.place(x = WIDTH * 0, y = HEIGHT * 0, width = WIDTH * 0.75, height = HEIGHT * 0.75)
         songtrack = Label(trackframe, textvariable = self.track, width = 85, font = ("times new roman", 24, "bold"), bg = "black", fg = "gold").grid(row = 0, column = 0, padx = 10, pady = 5)
         trackstatus = Label(trackframe, textvariable=self.status, font=("times new roman", 24, "bold"), bg="black", fg="gold").grid(row=1, column=0, padx=10, pady=5)
 
         #creating button frame
         buttonframe = LabelFrame(self.root, text="Control Panel", font=("times new roman", 15, "bold"), bg="grey", fg="white", bd=5, relief=GROOVE)
-        buttonframe.place(x=0, y=810, width=1440, height=270)
+        buttonframe.place(x= WIDTH * 0, y= HEIGHT * 0.75, width = WIDTH * 0.75, height = HEIGHT * 0.25)
         playbtn1 = Button(buttonframe, text = "PLAY", command = self.playsong, width = 8, height = 1,font = ("times new roman", 16, "bold"), fg = "navyblue", bg = "gold").grid(row = 0, column = 0, padx = 20, pady = 5)
         playbtn2 = Button(buttonframe, text="PAUSE", command = self.pausesong, width=8, height = 1,font = ("times new roman", 16, "bold"), fg = "navyblue", bg = "gold").grid(row = 0, column = 1, padx = 20, pady = 5)
         playbtn3 = Button(buttonframe, text="UNPAUSE", command = self.unpausesong, width=8, height = 1,font = ("times new roman", 16, "bold"), fg = "navyblue", bg = "gold").grid(row = 0,column = 2, padx = 20,pady = 5)
-        playbtn4 = Button(buttonframe, text="CLOSE", command = self.stopsong, width = 8, height = 1,font = ("times new roman", 16, "bold"), fg = "navyblue", bg = "gold").grid(row = 0, column = 6, padx = 20, pady = 5)
-        playbtn5 = Button(buttonframe, text = "ARTIST", command = self.wiki, width = 8, height = 1, font = ("times new roman", 16, "bold"), fg = "navyblue", bg = "gold").grid(row = 0, column = 3, padx = 20, pady = 5)
+        playbtn4 = Button(buttonframe, text="CLOSE", command = self.stopsong, width = 8, height = 1,font = ("times new roman", 16, "bold"), fg = "navyblue", bg = "gold").grid(row = 0, column = 3, padx = 20, pady = 5)
+        playbtn5 = Button(buttonframe, text = "ARTIST", command = self.wiki, width = 8, height = 1, font = ("times new roman", 16, "bold"), fg = "navyblue", bg = "gold").grid(row = 0, column = 4, padx = 20, pady = 5)
         playbtn6 = Button(buttonframe, text = "RECORD", command = self.voice_rec, font = ("times new roman", 16, "bold"), fg = "navyblue", bg = "gold").grid(row = 0, column = 5, padx = 20, pady = 5)
-        playbtn7 = Button(buttonframe, text = "LYRICS", command = self.show_lyric, font = ("times new roman", 16, "bold"), fg = "navyblue", bg = "gold").grid(row = 0, column = 4, padx = 20, pady = 5)
+        playbtn7 = Button(buttonframe, text = "LYRICS", command = self.show_lyric, font = ("times new roman", 16, "bold"), fg = "navyblue", bg = "gold").grid(row = 0, column = 6, padx = 20, pady = 5)
         playbtn8 = Button(buttonframe, text = "SUGGESTION", command = self.get_recommendation, font = ("times new roman", 16, "bold"), fg = "navyblue", bg = "gold").grid(row = 0, column = 7, padx = 20, pady = 5)
-         
+        playbtn9 = Button(buttonframe, text = "CLOSE", command = self.close, font = ("times new roman", 16, "bold"), fg = "navyblue", bg = "gold").grid(row = 0, column = 8, padx = 20, pady = 5)
 
         #creating song list
         songsframe = LabelFrame(self.root, text = "Song List", font = ("times new roman", 18, "bold"), bg = "grey", fg = "white", bd = 5, relief = GROOVE)
-        songsframe.place(x = 1440, y = 0, width = 480, height = 675)
+        songsframe.place(x = WIDTH * 0.75, y = HEIGHT * 0, width = WIDTH * 0.25, height = HEIGHT * 0.5)
         scrol_y = Scrollbar(songsframe, orient=VERTICAL)
         self.playlist = Listbox(songsframe, yscrollcommand=scrol_y.set, selectbackground="gold", selectmode=SINGLE,font=("times new roman", 12, "bold"), bg="white", fg="navyblue", bd=5, relief=GROOVE)
         scrol_y.pack(side=RIGHT, fill=Y)
@@ -61,7 +64,7 @@ class MusicPlayer:
         self.playlist.pack(fill=BOTH)
 
         #for import the location of the songs folder
-        path = pathlib.Path("X:\music")
+        path = pathlib.Path("/home/z3r0/music")
         os.chdir(path)
         songtracks = path.iterdir()
         for track in songtracks:
@@ -84,6 +87,8 @@ class MusicPlayer:
     def stopsong(self):
         self.status.set("Stopped")
         pygame.mixer.music.stop()
+    
+    def close(self):
         exit(0)
 
     def wiki(self):
@@ -135,12 +140,12 @@ class MusicPlayer:
 
     def get_recommendation(self):
         recommendframe = LabelFrame(root, text = "Suggestions", font = ("times new roman", 18, "bold"), bg = "white", fg = "grey", bd = 5, relief = GROOVE)
-        recommendframe.place(x = 1440, y = 675, width = 480, height = 405)
+        recommendframe.place(x = WIDTH * 0.75, y = HEIGHT * 0.5, width = WIDTH * 0.25, height = HEIGHT * 0.5)
         inp = simpledialog.askstring("Song", "Please enter the name of the song : ")
         sp = spotipy.Spotify(client_credentials_manager = SpotifyClientCredentials("8179379b673642bfa740adba6d163b5c", "8b207d4a74984ddf81faf96c5d4c0c55"))
         result = sp.search(q = inp, limit = 1)
         id_list = [result['tracks']['items'][0]['id']]
-        recommend = sp.recommendations(seed_tracks = id_list, limit = 9)
+        recommend = sp.recommendations(seed_tracks = id_list, limit = 20)
         lbl_track_name = Label(master = recommendframe, text = 'Track Name', bg = "white", fg = "black")
         lbl_artist_name = Label(master = recommendframe, text = 'Artist Name', bg = "white", fg = "black")
         lbl_track_name.grid(row = 0, column = 0)
