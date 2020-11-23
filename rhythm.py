@@ -37,17 +37,17 @@ class MusicPlayer:
 
         #creating track frame
         trackframe = LabelFrame(self.root, text = "Song Track", font =("times new roman", 16, "italic"), bg = "black", fg = "white",  relief = GROOVE, cursor = "arrow")
-        trackframe.place(x = WIDTH * 0, y = HEIGHT * 0, width = WIDTH * 0.75, height = HEIGHT * 0.75)
-        songtrack = Label(trackframe, textvariable = self.track, width = 85, font = ("times new roman", 24, "bold"), bg = "black", fg = "gold").grid(row = 0, column = 0, padx = 10, pady = 5)
+        trackframe.place(x = WIDTH * 0, y = HEIGHT * 0, width = WIDTH * 0.75, height = HEIGHT * 0.875)
+        songtrack = Label(trackframe, textvariable = self.track, width = 75, font = ("times new roman", 24, "bold"), bg = "black", fg = "gold").grid(row = 0, column = 0, padx = 10, pady = 5)
         trackstatus = Label(trackframe, textvariable=self.status, font=("times new roman", 24, "bold"), bg="black", fg="gold").grid(row=1, column=0, padx=10, pady=5)
 
         #creating button frame
         buttonframe = LabelFrame(self.root, text="Control Panel", font=("times new roman", 15, "bold"), bg="grey", fg="white", relief=GROOVE)
-        buttonframe.place(x= WIDTH * 0, y= HEIGHT * 0.75, width = WIDTH * 0.75, height = HEIGHT * 0.25)
+        buttonframe.place(x= WIDTH * 0, y= HEIGHT * 0.875, width = WIDTH * 0.75, height = HEIGHT * 0.25)
         playbtn1 = Button(buttonframe, text = "PLAY", command = self.playsong, width = 8, height = 1,font = ("times new roman", 16, "bold"), fg = "navyblue", bg = "gold").grid(row = 0, column = 0, padx = 20, pady = 5)
         playbtn2 = Button(buttonframe, text="PAUSE", command = self.pausesong, width=8, height = 1,font = ("times new roman", 16, "bold"), fg = "navyblue", bg = "gold").grid(row = 0, column = 1, padx = 20, pady = 5)
         playbtn3 = Button(buttonframe, text="UNPAUSE", command = self.unpausesong, width=8, height = 1,font = ("times new roman", 16, "bold"), fg = "navyblue", bg = "gold").grid(row = 0,column = 2, padx = 20,pady = 5)
-        playbtn4 = Button(buttonframe, text="CLOSE", command = self.stopsong, width = 8, height = 1,font = ("times new roman", 16, "bold"), fg = "navyblue", bg = "gold").grid(row = 0, column = 3, padx = 20, pady = 5)
+        playbtn4 = Button(buttonframe, text="STOP", command = self.stopsong, width = 8, height = 1,font = ("times new roman", 16, "bold"), fg = "navyblue", bg = "gold").grid(row = 0, column = 3, padx = 20, pady = 5)
         playbtn5 = Button(buttonframe, text = "ARTIST", command = self.wiki, width = 8, height = 1, font = ("times new roman", 16, "bold"), fg = "navyblue", bg = "gold").grid(row = 0, column = 4, padx = 20, pady = 5)
         playbtn6 = Button(buttonframe, text = "RECORD", command = self.voice_rec, font = ("times new roman", 16, "bold"), fg = "navyblue", bg = "gold").grid(row = 0, column = 5, padx = 20, pady = 5)
         playbtn7 = Button(buttonframe, text = "LYRICS", command = self.show_lyric, font = ("times new roman", 16, "bold"), fg = "navyblue", bg = "gold").grid(row = 0, column = 6, padx = 20, pady = 5)
@@ -64,7 +64,7 @@ class MusicPlayer:
         self.playlist.pack(fill=BOTH)
 
         #for import the location of the songs folder
-        path = pathlib.Path("/home/z3r0/music")
+        path = pathlib.Path("X:/music")
         os.chdir(path)
         songtracks = path.iterdir()
         for track in songtracks:
@@ -130,7 +130,7 @@ class MusicPlayer:
             result.set(msg)
         
             lyricframe = LabelFrame(root, text = "Lyrics", font = ("times new roman", 10, "italic"), bg = "black", fg = "white", relief = GROOVE)
-            lyricframe.place(x = WIDTH * 0, y = HEIGHT * 0.125, width = WIDTH * 0.75, height = HEIGHT * 0.625)
+            lyricframe.place(x = WIDTH * 0, y = HEIGHT * 0.125, width = WIDTH * 0.75, height = HEIGHT * 0.75)
 
             t = Label(lyricframe, textvariable = result, bg = "black", fg = "white")
         
