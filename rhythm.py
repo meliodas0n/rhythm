@@ -14,7 +14,6 @@ load_dotenv()
 import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
 
-
 #keys for lyrics extractor
 api_key = "AIzaSyC5dvhCUZawlFulTZfwhSG3mPs979LN8uA"
 cse_key = "4a730f5a78fe71353"
@@ -96,15 +95,10 @@ class MusicPlayer:
         name = artist
         wiki_input = wikipedia.page(name)
         msg = wiki_input.content
-
         pop = Tk()
-
         fontStyle = tkFont.Font(family = "times new roman", size = 12)
-
         pop.title(name)
-
         pop.geometry(f"{pop.winfo_screenwidth()}x{pop.winfo_screenheight()}+0+0")
-
         w = Message(pop, text = msg)
         w.pack()
 
@@ -114,7 +108,6 @@ class MusicPlayer:
         print("Recording")
         myrecording = sd.rec(int(duration * fs), samplerate = fs, channels = 2)
         sd.wait()
-
         return sf.write('my_Audio_file1.flac',  myrecording, fs)
         print("Recorded")
 
@@ -122,20 +115,15 @@ class MusicPlayer:
         result = StringVar()
         s_name = simpledialog.askstring("SONG NAME", "Please enter the name of the Song: ")
         so_name = s_name
-
         if so_name:
             extract_lyrics = SongLyrics(api_key, cse_key)
             data = extract_lyrics.get_lyrics(so_name)
             msg = data['lyrics']
             result.set(msg)
-        
             lyricframe = LabelFrame(root, text = "Lyrics", font = ("times new roman", 10, "italic"), bg = "black", fg = "white", relief = GROOVE)
             lyricframe.place(x = WIDTH * 0, y = HEIGHT * 0.125, width = WIDTH * 0.75, height = HEIGHT * 0.75)
-
-            t = Label(lyricframe, textvariable = result, bg = "black", fg = "white")
-        
+            t = Label(lyricframe, textvariable = result, bg = "black", fg = "white")        
             t.pack()
-
 
     def get_recommendation(self):
         recommendframe = LabelFrame(root, text = "Suggestions", font = ("times new roman", 18, "bold"), bg = "white", fg = "black", relief = GROOVE)
@@ -159,4 +147,3 @@ class MusicPlayer:
 
 MusicPlayer(root)
 root.mainloop()
-
