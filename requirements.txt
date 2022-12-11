@@ -1,7 +1,7 @@
 lyrics_extractor==3.0.1
 pygame==2.1.2
-python-dotenv==0.19.2
-sounddevice==0.4.4
-SoundFile==0.10.3.post1
-spotipy==2.19.0
+python-dotenv==0.21.0
+sounddevice==0.4.5
+soundfile==0.11.0
+spotipy==2.22.0
 wikipedia==1.4.0
