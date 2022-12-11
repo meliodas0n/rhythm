@@ -1,6 +1,9 @@
+#! /usr/bin/python3
+
 from tkinter import *
 import pygame
 import os
+import subprocess
 import wikipedia
 import pathlib
 import tkinter.font as tkFont
@@ -20,8 +23,12 @@ cse_key = "4a730f5a78fe71353"
 
 root = Tk()
 
-WIDTH = root.winfo_screenwidth()
-HEIGHT = root.winfo_screenheight()
+WIDTH = 1920
+HEIGHT = 1080
+# WIDTH = root.winfo_screenwidth()
+# HEIGHT = root.winfo_screenheight()
+
+PATH = pathlib.Path("/home/eminence/Music/")
 
 class MusicPlayer:
     def __init__(self, root):
@@ -63,17 +70,23 @@ class MusicPlayer:
         self.playlist.pack(fill=BOTH)
 
         #for import the location of the songs folder
-        path = pathlib.Path("X:/music")
-        os.chdir(path)
-        songtracks = path.iterdir()
+        os.chdir(PATH)
+        songtracks = PATH.iterdir()
         for track in songtracks:
             self.playlist.insert(END, track)
 
     def playsong(self):
-        self.track.set(self.playlist.get(ACTIVE))
+        current_song = self.playlist.get(ACTIVE)
+        self.track.set(current_song)
         self.status.set("Playing")
-        pygame.mixer.music.load(self.playlist.get(ACTIVE))
-        pygame.mixer.music.play()
+        playable_song = current_song.split('.')[0]
+        s = subprocess.call(['ffmpeg', '-i', current_song, f'{playable_song}.ogg'])
+        if s == 0:
+            playable_song = f'{playable_song}.ogg'
+            pygame.mixer.music.load(playable_song)
+            pygame.mixer.music.play()
+        else:
+          print('u suck - conversion failed')
 
     def pausesong(self):
         self.status.set("Pause")
@@ -88,6 +101,10 @@ class MusicPlayer:
         pygame.mixer.music.stop()
     
     def close(self):
+        test = os.listdir(PATH)
+        for item in test:
+          if item.endswith('ogg'):
+            os.remove(os.path.join(PATH, item))
         exit(0)
 
     def wiki(self):
