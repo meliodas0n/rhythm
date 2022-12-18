@@ -18,8 +18,8 @@ import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
 
 #keys for lyrics extractor
-api_key = "AIzaSyC5dvhCUZawlFulTZfwhSG3mPs979LN8uA"
-cse_key = "4a730f5a78fe71353"
+API_KEY = "AIzaSyAwNAeNy9OrcWkQFYMTh0gVmEQl1lB3FXo"
+CSE_KEY = "604928c7439f74806"
 
 root = Tk()
 
@@ -73,20 +73,30 @@ class MusicPlayer:
     os.chdir(PATH)
     songtracks = PATH.iterdir()
     for track in songtracks:
-      self.playlist.insert(END, track)
+      if str(track).endswith('.mp3'):
+        self.playlist.insert(END, track)
 
   def playsong(self):
     current_song = self.playlist.get(ACTIVE)
     self.track.set(current_song)
     self.status.set("Playing")
     playable_song = current_song.split('.')[0]
-    s = subprocess.call(['ffmpeg', '-i', current_song, f'{playable_song}.ogg'])
-    if s == 0:
+    if os.path.exists(f'{playable_song}.ogg'):
       playable_song = f'{playable_song}.ogg'
       pygame.mixer.music.load(playable_song)
       pygame.mixer.music.play()
     else:
-      print('u suck - conversion failed')
+      try:
+        s = subprocess.call(['ffmpeg', '-i', current_song, f'{playable_song}.ogg'])
+        if s == 0:
+          playable_song = f'{playable_song}.ogg'
+          pygame.mixer.music.load(playable_song)
+          pygame.mixer.music.play()
+        else:
+          print('u suck - conversion failed')
+      except Exception as e:
+        print(e)    
+
 
   def pausesong(self):
     self.status.set("Pause")
@@ -133,7 +143,7 @@ class MusicPlayer:
     s_name = simpledialog.askstring("SONG NAME", "Please enter the name of the Song: ")
     so_name = s_name
     if so_name:
-      extract_lyrics = SongLyrics(api_key, cse_key)
+      extract_lyrics = SongLyrics(API_KEY, CSE_KEY)
       data = extract_lyrics.get_lyrics(so_name)
       msg = data['lyrics']
       result.set(msg)
@@ -161,6 +171,14 @@ class MusicPlayer:
         lbl_artist_name_recommended = Label(master = recommendframe, text = track['artists'][0]['name'], fg = "black", bg = "white")
         lbl_artist_name_recommended.grid(row = idx + 1, column = 1)
 
+def on_closing():
+  if messagebox.askokcancel("QUIT", "Do you want to Quit?"):
+    test = os.listdir(PATH)
+    for item in test:
+      if item.endswith('ogg'):
+        os.remove(os.path.join(PATH, item))
+    root.destroy()
 
 MusicPlayer(root)
+root.protocol('WM_DELETE_WINDOW', on_closing)
 root.mainloop()
