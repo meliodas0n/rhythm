@@ -1,5 +1,15 @@
 #! /usr/bin/python3
 
+"""
+  TODO : fix right frame
+  TODO : make the song list immersive
+  TODO : fix lyrics frame not showing properly - have to adda scroll bar
+  TODO : fix recommendation system
+  TODO : add volume slider or some shit
+  TODO : fix current listening showing the entire instead of the song name
+  TODO : FINAL - "make the app executable"
+"""
+
 from tkinter import *
 import pygame
 import os
@@ -41,15 +51,21 @@ class MusicPlayer:
     self.track = StringVar()
     self.status = StringVar()
 
+    leftframe = Frame(root)
+    leftframe.place(x = WIDTH * 0, y = HEIGHT * 0, width = WIDTH * 0.75, heigh = HEIGHT)
+    
+    rightframe = Frame(root)
+    rightframe.place(x = WIDTH * 0.75, y = HEIGHT * 0, width = WIDTH * 0.25, height = HEIGHT)
+    
     #creating track frame
-    trackframe = LabelFrame(self.root, text = "Song Track", font =("times new roman", 16, "italic"), bg = "black", fg = "white",  relief = GROOVE, cursor = "arrow")
+    trackframe = LabelFrame(leftframe, text = "Song Track", font =("times new roman", 16, "italic"), bg = "black", fg = "white",  relief = GROOVE, cursor = "arrow")
     trackframe.place(x = WIDTH * 0, y = HEIGHT * 0, width = WIDTH * 0.75, height = HEIGHT * 0.875)
     songtrack = Label(trackframe, textvariable = self.track, width = 75, font = ("times new roman", 24, "bold"), bg = "black", fg = "white").grid(row = 0, column = 0, padx = 10, pady = 5)
     trackstatus = Label(trackframe, textvariable=self.status, font=("times new roman", 24, "bold"), bg="black", fg="white").grid(row=1, column=0, padx=10, pady=5)
-
+    
     #creating button frame
-    buttonframe = LabelFrame(self.root, text="Control Panel", font=("times new roman", 15, "italic"), bg="white", fg="black", relief=GROOVE)
-    buttonframe.place(x= WIDTH * 0, y= HEIGHT * 0.875, width = WIDTH * 0.75, height = HEIGHT * 0.25)
+    buttonframe = LabelFrame(leftframe, text="Control Panel", font=("times new roman", 15, "italic"), bg="white", fg="black", relief=GROOVE)
+    buttonframe.place(x= WIDTH * 0, y= HEIGHT * 0.875, width = WIDTH, height = HEIGHT * 0.25)
     playbtn1 = Button(buttonframe, text = "PLAY", command = self.playsong,  font = ("times new roman", 16, "bold italic"), fg = "navyblue", bg = "silver").grid(row = 0, column = 0, padx = 20, pady = 5)
     playbtn2 = Button(buttonframe, text="PAUSE", command = self.pausesong, font = ("times new roman", 16, "bold italic"), fg = "navyblue", bg = "silver").grid(row = 0, column = 1, padx = 20, pady = 5)
     playbtn3 = Button(buttonframe, text="UNPAUSE", command = self.unpausesong, font = ("times new roman", 16, "bold italic"), fg = "navyblue", bg = "silver").grid(row = 0,column = 2, padx = 20,pady = 5)
@@ -59,15 +75,15 @@ class MusicPlayer:
     playbtn7 = Button(buttonframe, text = "LYRICS", command = self.show_lyric, font = ("times new roman", 16, "bold italic"), fg = "navyblue", bg = "silver").grid(row = 0, column = 6, padx = 20, pady = 5)
     playbtn8 = Button(buttonframe, text = "SUGGESTION", command = self.get_recommendation, font = ("times new roman", 16, "bold italic"), fg = "navyblue", bg = "silver").grid(row = 0, column = 7, padx = 20, pady = 5)
     playbtn9 = Button(buttonframe, text = "CLOSE", command = self.close, font = ("times new roman", 16, "bold italic"), fg = "navyblue", bg = "silver").grid(row = 0, column = 8, padx = 20, pady = 5)
-
+    
     #creating song list
-    songsframe = LabelFrame(self.root, text = "Song List", font = ("times new roman", 18, "italic"), bg = "black", fg = "white", relief = GROOVE)
+    songsframe = LabelFrame(rightframe, text = "Song List", font = ("times new roman", 18, "italic"), bg = "black", fg = "white", relief = GROOVE)
     songsframe.place(x = WIDTH * 0.75, y = HEIGHT * 0, width = WIDTH * 0.25, height = HEIGHT * 0.5)
     scrol_y = Scrollbar(songsframe, orient=VERTICAL)
-    self.playlist = Listbox(songsframe, yscrollcommand=scrol_y.set, selectbackground="blue", selectmode=SINGLE,font=("times new roman", 12, "italic"), bg="white", fg="black", bd=5, relief=GROOVE)
+    self.playlist = Listbox(songsframe, yscrollcommand = scrol_y.set, selectbackground = "blue", selectmode = SINGLE, font = ("times new roman", 12, "italic"), bg = "black", fg = "white") #  bd = 5, relief = GROOVE
     scrol_y.pack(side=RIGHT, fill=Y)
     scrol_y.config(command=self.playlist.yview)
-    self.playlist.pack(fill=BOTH)
+    self.playlist.pack(side = BOTTOM, fill=BOTH)
 
     #for import the location of the songs folder
     os.chdir(PATH)
@@ -138,7 +154,7 @@ class MusicPlayer:
     return sf.write('my_Audio_file1.flac',  myrecording, fs)
     print("Recorded")
 
-  def show_lyric(self):
+  def show_lyric(self, leftframe):
     result = StringVar()
     s_name = simpledialog.askstring("SONG NAME", "Please enter the name of the Song: ")
     so_name = s_name
@@ -147,13 +163,13 @@ class MusicPlayer:
       data = extract_lyrics.get_lyrics(so_name)
       msg = data['lyrics']
       result.set(msg)
-      lyricframe = LabelFrame(root, text = "Lyrics", font = ("times new roman", 10, "italic"), bg = "black", fg = "white", relief = GROOVE)
+      lyricframe = LabelFrame(leftframe, text = "Lyrics", font = ("times new roman", 10, "italic"), bg = "black", fg = "white", relief = GROOVE)
       lyricframe.place(x = WIDTH * 0, y = HEIGHT * 0.125, width = WIDTH * 0.75, height = HEIGHT * 0.75)
       t = Label(lyricframe, textvariable = result, bg = "black", fg = "white")        
       t.pack()
 
-  def get_recommendation(self):
-    recommendframe = LabelFrame(root, text = "Suggestions", font = ("times new roman", 18, "bold"), bg = "white", fg = "black", relief = GROOVE)
+  def get_recommendation(self, rightframe):
+    recommendframe = LabelFrame(rightframe, text = "Suggestions", font = ("times new roman", 18, "bold"), bg = "white", fg = "black", relief = GROOVE)
     recommendframe.place(x = WIDTH * 0.75, y = HEIGHT * 0.5, width = WIDTH * 0.25, height = HEIGHT * 0.5)
     inp = simpledialog.askstring("Song", "Please enter the name of the song : ")
     if inp:
