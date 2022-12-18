@@ -38,7 +38,7 @@ HEIGHT = 1080
 # WIDTH = root.winfo_screenwidth()
 # HEIGHT = root.winfo_screenheight()
 
-PATH = pathlib.Path("/home/eminence/Music/")
+PATH = pathlib.Path("/home/meliodas/Music/")
 
 class MusicPlayer:
   def __init__(self, root):
