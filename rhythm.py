@@ -154,7 +154,7 @@ class MusicPlayer:
     return sf.write('my_Audio_file1.flac',  myrecording, fs)
     print("Recorded")
 
-  def show_lyric(self, leftframe):
+  def show_lyric(self):
     result = StringVar()
     s_name = simpledialog.askstring("SONG NAME", "Please enter the name of the Song: ")
     so_name = s_name
@@ -163,7 +163,7 @@ class MusicPlayer:
       data = extract_lyrics.get_lyrics(so_name)
       msg = data['lyrics']
       result.set(msg)
-      lyricframe = LabelFrame(leftframe, text = "Lyrics", font = ("times new roman", 10, "italic"), bg = "black", fg = "white", relief = GROOVE)
+      lyricframe = LabelFrame(self.root, text = "Lyrics", font = ("times new roman", 10, "italic"), bg = "black", fg = "white", relief = GROOVE)
       lyricframe.place(x = WIDTH * 0, y = HEIGHT * 0.125, width = WIDTH * 0.75, height = HEIGHT * 0.75)
       t = Label(lyricframe, textvariable = result, bg = "black", fg = "white")        
       t.pack()
