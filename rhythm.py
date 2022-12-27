@@ -168,8 +168,8 @@ class MusicPlayer:
       t = Label(lyricframe, textvariable = result, bg = "black", fg = "white")        
       t.pack()
 
-  def get_recommendation(self, rightframe):
-    recommendframe = LabelFrame(rightframe, text = "Suggestions", font = ("times new roman", 18, "bold"), bg = "white", fg = "black", relief = GROOVE)
+  def get_recommendation(self):
+    recommendframe = LabelFrame(self.root, text = "Suggestions", font = ("times new roman", 18, "bold"), bg = "white", fg = "black", relief = GROOVE)
     recommendframe.place(x = WIDTH * 0.75, y = HEIGHT * 0.5, width = WIDTH * 0.25, height = HEIGHT * 0.5)
     inp = simpledialog.askstring("Song", "Please enter the name of the song : ")
     if inp:
