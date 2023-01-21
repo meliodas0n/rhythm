@@ -26,6 +26,7 @@ from dotenv import load_dotenv
 load_dotenv()
 import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
+from pydub import AudioSegment
 
 #keys for lyrics extractor
 API_KEY = "AIzaSyAwNAeNy9OrcWkQFYMTh0gVmEQl1lB3FXo"
@@ -38,7 +39,7 @@ HEIGHT = 1080
 # WIDTH = root.winfo_screenwidth()
 # HEIGHT = root.winfo_screenheight()
 
-PATH = pathlib.Path("/home/meliodas/Music/")
+PATH = pathlib.Path("/home/shadow/code/projects/rhythm/music/")
 
 class MusicPlayer:
   def __init__(self, root):
@@ -92,27 +93,42 @@ class MusicPlayer:
       if str(track).endswith('.mp3'):
         self.playlist.insert(END, track)
 
-  def playsong(self):
-    current_song = self.playlist.get(ACTIVE)
-    self.track.set(current_song)
-    self.status.set("Playing")
-    playable_song = current_song.split('.')[0]
-    if os.path.exists(f'{playable_song}.ogg'):
-      playable_song = f'{playable_song}.ogg'
-      pygame.mixer.music.load(playable_song)
-      pygame.mixer.music.play()
-    else:
-      try:
-        s = subprocess.call(['ffmpeg', '-i', current_song, f'{playable_song}.ogg'])
-        if s == 0:
-          playable_song = f'{playable_song}.ogg'
-          pygame.mixer.music.load(playable_song)
-          pygame.mixer.music.play()
-        else:
-          print('u suck - conversion failed')
-      except Exception as e:
-        print(e)    
 
+  # def playsong(self):
+  #   current_song = self.playlist.get(ACTIVE)
+  #   self.track.set(current_song)
+  #   self.status.set("Playing")
+  #   playable_song = current_song.split('.')[0]
+  #   if os.path.exists(f'{playable_song}.ogg'):
+  #     playable_song = f'{playable_song}.ogg'
+  #     pygame.mixer.music.load(playable_song)
+  #     pygame.mixer.music.play()
+  #   else:
+  #     try:
+  #       s = subprocess.call(['ffmpeg', '-i', current_song, f'{playable_song}.ogg'])
+  #       if s == 0:
+  #         playable_song = f'{playable_song}.ogg'
+  #         pygame.mixer.music.load(playable_song)
+  #         pygame.mixer.music.play()
+  #       else:
+  #         print('u suck - conversion failed')
+  #     except Exception as e:
+  #       print(e)    
+
+  def playsong(self) -> None:
+      current_song = self.playlist.get(ACTIVE)
+      print(current_song)
+      self.track.set(current_song)
+      self.status.set("Playing")
+      s = subprocess.call(['ftransc', '-f', 'ogg', current_song])
+      playable_song = current_song.split('.')[0]
+      print(playable_song)
+      try:
+        if s == 0:
+          pygame.mixer.music.load(f'{playable_song}.ogg')
+          pygame.mixer.music.play()
+      except Exception as e:
+        print(f'{e}')
 
   def pausesong(self):
     self.status.set("Pause")
