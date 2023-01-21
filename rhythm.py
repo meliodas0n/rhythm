@@ -39,6 +39,11 @@ HEIGHT = 1080
 # WIDTH = root.winfo_screenwidth()
 # HEIGHT = root.winfo_screenheight()
 
+leftframe = Frame(root)
+leftframe.place(x = WIDTH * 0, y = HEIGHT * 0, width = WIDTH * 0.75, heigh = HEIGHT)
+rightframe = Frame(root)
+rightframe.place(x = WIDTH * 0.75, y = HEIGHT * 0, width = WIDTH * 0.25, height = HEIGHT)
+
 PATH = pathlib.Path("/home/shadow/code/projects/rhythm/music/")
 
 class MusicPlayer:
@@ -51,21 +56,21 @@ class MusicPlayer:
     pygame.mixer.init()
     self.track = StringVar()
     self.status = StringVar()
+    
+    self.leftframe = leftframe
+    self.rightframe = rightframe
 
-    leftframe = Frame(root)
-    leftframe.place(x = WIDTH * 0, y = HEIGHT * 0, width = WIDTH * 0.75, heigh = HEIGHT)
-    
-    rightframe = Frame(root)
-    rightframe.place(x = WIDTH * 0.75, y = HEIGHT * 0, width = WIDTH * 0.25, height = HEIGHT)
-    
     #creating track frame
-    trackframe = LabelFrame(leftframe, text = "Song Track", font =("times new roman", 16, "italic"), bg = "black", fg = "white",  relief = GROOVE, cursor = "arrow")
+    trackframe = LabelFrame(self.leftframe, text = "Song Track", font =("times new roman", 16, "italic"), bg = "black", fg = "white",  relief = GROOVE, cursor = "arrow")
     trackframe.place(x = WIDTH * 0, y = HEIGHT * 0, width = WIDTH * 0.75, height = HEIGHT * 0.875)
     songtrack = Label(trackframe, textvariable = self.track, width = 75, font = ("times new roman", 24, "bold"), bg = "black", fg = "white").grid(row = 0, column = 0, padx = 10, pady = 5)
     trackstatus = Label(trackframe, textvariable=self.status, font=("times new roman", 24, "bold"), bg="black", fg="white").grid(row=1, column=0, padx=10, pady=5)
     
+    self.recommendframe = LabelFrame(self.root, text = "Suggestions", font = ("times new roman", 18, "bold"), bg = "black", fg = "white", relief = GROOVE)
+    self.recommendframe.place(x = WIDTH * 0.75, y = HEIGHT * 0.5, width = WIDTH * 0.25, height = HEIGHT * 0.5)
+
     #creating button frame
-    buttonframe = LabelFrame(leftframe, text="Control Panel", font=("times new roman", 15, "italic"), bg="white", fg="black", relief=GROOVE)
+    buttonframe = LabelFrame(self.leftframe, text="Control Panel", font=("times new roman", 15, "italic"), bg="white", fg="black", relief=GROOVE)
     buttonframe.place(x= WIDTH * 0, y= HEIGHT * 0.875, width = WIDTH, height = HEIGHT * 0.25)
     playbtn1 = Button(buttonframe, text = "PLAY", command = self.playsong,  font = ("times new roman", 16, "bold italic"), fg = "navyblue", bg = "silver").grid(row = 0, column = 0, padx = 20, pady = 5)
     playbtn2 = Button(buttonframe, text="PAUSE", command = self.pausesong, font = ("times new roman", 16, "bold italic"), fg = "navyblue", bg = "silver").grid(row = 0, column = 1, padx = 20, pady = 5)
@@ -78,13 +83,15 @@ class MusicPlayer:
     playbtn9 = Button(buttonframe, text = "CLOSE", command = self.close, font = ("times new roman", 16, "bold italic"), fg = "navyblue", bg = "silver").grid(row = 0, column = 8, padx = 20, pady = 5)
     
     #creating song list
-    songsframe = LabelFrame(rightframe, text = "Song List", font = ("times new roman", 18, "italic"), bg = "black", fg = "white", relief = GROOVE)
-    songsframe.place(x = WIDTH * 0.75, y = HEIGHT * 0, width = WIDTH * 0.25, height = HEIGHT * 0.5)
-    scrol_y = Scrollbar(songsframe, orient=VERTICAL)
-    self.playlist = Listbox(songsframe, yscrollcommand = scrol_y.set, selectbackground = "blue", selectmode = SINGLE, font = ("times new roman", 12, "italic"), bg = "black", fg = "white") #  bd = 5, relief = GROOVE
-    scrol_y.pack(side=RIGHT, fill=Y)
-    scrol_y.config(command=self.playlist.yview)
-    self.playlist.pack(side = BOTTOM, fill=BOTH)
+    songsframe = LabelFrame(self.rightframe, text = "Song List", font = ("times new roman", 18, "italic"), bg = "black", fg = "white", relief = GROOVE)
+    # songsframe.place(x = WIDTH * 0.75, y = HEIGHT * 0, width = WIDTH * 0.25, height = HEIGHT * 0.5)
+    songsframe.place(x = WIDTH * 0, y = HEIGHT * 0, width = WIDTH * 1, height = HEIGHT * 0.2)
+    # scrol_y = Scrollbar(songsframe, orient=VERTICAL)
+
+    self.playlist = Listbox(songsframe, selectbackground = "white", selectmode = SINGLE, font = ("times new roman", 12, "italic"), bg = "black", fg = "white") #  bd = 5, relief = GROOVE yscrollcommand = scrol_y.set
+    # scrol_y.pack(side = RIGHT, fill = Y)
+    # scrol_y.config(command = self.playlist.yview)
+    # self.playlist.pack(side = TOP, fill = BOTH)
 
     #for import the location of the songs folder
     os.chdir(PATH)
@@ -92,7 +99,8 @@ class MusicPlayer:
     for track in songtracks:
       if str(track).endswith('.mp3'):
         self.playlist.insert(END, track)
-
+    #self.playlist.place(x = 0, y = 0, width = 1, height = 0.5)
+    self.playlist.pack(side = TOP, fill = BOTH)
 
   # def playsong(self):
   #   current_song = self.playlist.get(ACTIVE)
@@ -116,19 +124,18 @@ class MusicPlayer:
   #       print(e)    
 
   def playsong(self) -> None:
-      current_song = self.playlist.get(ACTIVE)
-      print(current_song)
-      self.track.set(current_song)
-      self.status.set("Playing")
-      s = subprocess.call(['ftransc', '-f', 'ogg', current_song])
-      playable_song = current_song.split('.')[0]
-      print(playable_song)
-      try:
-        if s == 0:
-          pygame.mixer.music.load(f'{playable_song}.ogg')
-          pygame.mixer.music.play()
-      except Exception as e:
-        print(f'{e}')
+    current_song = self.playlist.get(ACTIVE)
+    self.track.set(current_song)
+    self.status.set("Playing")
+    s = subprocess.call(['ftransc', '-f', 'ogg', current_song])
+    playable_song = current_song.split('.')[0]
+    print(playable_song)
+    try:
+      if s == 0:
+        pygame.mixer.music.load(f'{playable_song}.ogg')
+        pygame.mixer.music.play()
+    except Exception as e:
+      print(f'{e}')
 
   def pausesong(self):
     self.status.set("Pause")
@@ -179,28 +186,28 @@ class MusicPlayer:
       data = extract_lyrics.get_lyrics(so_name)
       msg = data['lyrics']
       result.set(msg)
-      lyricframe = LabelFrame(self.root, text = "Lyrics", font = ("times new roman", 10, "italic"), bg = "black", fg = "white", relief = GROOVE)
+      lyricframe = LabelFrame(self.leftframe, text = "Lyrics", font = ("times new roman", 10, "italic"), bg = "black", fg = "white", relief = GROOVE)
       lyricframe.place(x = WIDTH * 0, y = HEIGHT * 0.125, width = WIDTH * 0.75, height = HEIGHT * 0.75)
       t = Label(lyricframe, textvariable = result, bg = "black", fg = "white")        
       t.pack()
 
   def get_recommendation(self):
-    recommendframe = LabelFrame(self.root, text = "Suggestions", font = ("times new roman", 18, "bold"), bg = "white", fg = "black", relief = GROOVE)
-    recommendframe.place(x = WIDTH * 0.75, y = HEIGHT * 0.5, width = WIDTH * 0.25, height = HEIGHT * 0.5)
+#    recommendframe = LabelFrame(self.root, text = "Suggestions", font = ("times new roman", 18, "bold"), bg = "black", fg = "white", relief = GROOVE)
+#     recommendframe.place(x = WIDTH * 0.75, y = HEIGHT * 0.5, width = WIDTH * 0.25, height = HEIGHT * 0.5)
     inp = simpledialog.askstring("Song", "Please enter the name of the song : ")
     if inp:
       sp = spotipy.Spotify(client_credentials_manager = SpotifyClientCredentials("8179379b673642bfa740adba6d163b5c", "8b207d4a74984ddf81faf96c5d4c0c55"))
       result = sp.search(q = inp, limit = 1)
       id_list = [result['tracks']['items'][0]['id']]
       recommend = sp.recommendations(seed_tracks = id_list, limit = 20)
-      lbl_track_name = Label(master = recommendframe, text = 'Track Name', bg = "white", fg = "black")
-      lbl_artist_name = Label(master = recommendframe, text = 'Artist Name', bg = "white", fg = "black")
+      lbl_track_name = Label(master = self.recommendframe, text = 'Track Name', bg = "black", fg = "white")
+      lbl_artist_name = Label(master = self.recommendframe, text = 'Artist Name', bg = "black", fg = "white")
       lbl_track_name.grid(row = 0, column = 0)
       lbl_artist_name.grid(row = 0, column = 1)
       for idx, track in enumerate(recommend['tracks']):
-        lbl_track_name_recommended = Label(master = recommendframe, text = track['name'], fg = "black", bg = "white")
+        lbl_track_name_recommended = Label(master = self.recommendframe, text = track['name'], fg = "white", bg = "black")
         lbl_track_name_recommended.grid(row = idx + 1, column = 0)
-        lbl_artist_name_recommended = Label(master = recommendframe, text = track['artists'][0]['name'], fg = "black", bg = "white")
+        lbl_artist_name_recommended = Label(master = self.recommendframe, text = track['artists'][0]['name'], fg = "white", bg = "black")
         lbl_artist_name_recommended.grid(row = idx + 1, column = 1)
 
 def on_closing():
