@@ -26,7 +26,6 @@ from dotenv import load_dotenv
 load_dotenv()
 import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
-from pydub import AudioSegment
 
 #keys for lyrics extractor
 API_KEY = "AIzaSyAwNAeNy9OrcWkQFYMTh0gVmEQl1lB3FXo"
@@ -44,7 +43,7 @@ leftframe.place(x = WIDTH * 0, y = HEIGHT * 0, width = WIDTH * 0.75, heigh = HEI
 rightframe = Frame(root)
 rightframe.place(x = WIDTH * 0.75, y = HEIGHT * 0, width = WIDTH * 0.25, height = HEIGHT)
 
-PATH = pathlib.Path("/home/shadow/code/projects/rhythm/music/")
+PATH = pathlib.Path("/home/meliodas/projects/rhythm/music/")
 
 class MusicPlayer:
   def __init__(self, root):
@@ -125,7 +124,10 @@ class MusicPlayer:
 
   def playsong(self) -> None:
     current_song = self.playlist.get(ACTIVE)
-    self.track.set(current_song)
+    path_song = current_song.split()
+    song_name = path_song[0].split('/')[-1]
+    print(song_name)
+    self.track.set(song_name)
     self.status.set("Playing")
     s = subprocess.call(['ftransc', '-f', 'ogg', current_song])
     playable_song = current_song.split('.')[0]
