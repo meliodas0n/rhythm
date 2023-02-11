@@ -43,7 +43,7 @@ leftframe.place(x = WIDTH * 0, y = HEIGHT * 0, width = WIDTH * 0.75, heigh = HEI
 rightframe = Frame(root)
 rightframe.place(x = WIDTH * 0.75, y = HEIGHT * 0, width = WIDTH * 0.25, height = HEIGHT)
 
-PATH = pathlib.Path("/home/meliodas/projects/rhythm/music/")
+PATH = pathlib.Path("/home/meliodas/rhythm/music/")
 
 class MusicPlayer:
   def __init__(self, root):
