@@ -1,12 +1,9 @@
 #! /usr/bin/python3
 
 """
-  TODO : fix right frame
-  TODO : make the song list immersive
-  TODO : fix lyrics frame not showing properly - have to adda scroll bar
+  TODO : fix lyrics frame not showing properly - have to add a scroll bar
   TODO : fix recommendation system
   TODO : add volume slider or some shit
-  TODO : fix current listening showing the entire instead of the song name
   TODO : FINAL - "make the app executable"
 """
 
@@ -26,6 +23,7 @@ from dotenv import load_dotenv
 load_dotenv()
 import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
+import glob
 
 #keys for lyrics extractor
 API_KEY = "AIzaSyAwNAeNy9OrcWkQFYMTh0gVmEQl1lB3FXo"
@@ -43,7 +41,7 @@ leftframe.place(x = WIDTH * 0, y = HEIGHT * 0, width = WIDTH * 0.75, heigh = HEI
 rightframe = Frame(root)
 rightframe.place(x = WIDTH * 0.75, y = HEIGHT * 0, width = WIDTH * 0.25, height = HEIGHT)
 
-PATH = pathlib.Path("/home/meliodas/rhythm/music/")
+PATH = pathlib.Path("/home/meliodas/projects/rhythm/music/")
 
 class MusicPlayer:
   def __init__(self, root):
@@ -83,55 +81,60 @@ class MusicPlayer:
     
     #creating song list
     songsframe = LabelFrame(self.rightframe, text = "Song List", font = ("times new roman", 18, "italic"), bg = "black", fg = "white", relief = GROOVE)
-    # songsframe.place(x = WIDTH * 0.75, y = HEIGHT * 0, width = WIDTH * 0.25, height = HEIGHT * 0.5)
-    songsframe.place(x = WIDTH * 0, y = HEIGHT * 0, width = WIDTH * 1, height = HEIGHT * 0.2)
-    # scrol_y = Scrollbar(songsframe, orient=VERTICAL)
+    songsframe.place(x = WIDTH * 0, y = HEIGHT * 0, width = WIDTH * 1, height = HEIGHT * 0.5)
+    self.playlist = Listbox(songsframe, selectbackground = "white", selectmode = SINGLE, font = ("times new roman", 12, "italic"), bg = "black", fg = "white", height = int(HEIGHT * 0.5), bd = 5, relief = GROOVE)
 
-    self.playlist = Listbox(songsframe, selectbackground = "white", selectmode = SINGLE, font = ("times new roman", 12, "italic"), bg = "black", fg = "white") #  bd = 5, relief = GROOVE yscrollcommand = scrol_y.set
-    # scrol_y.pack(side = RIGHT, fill = Y)
-    # scrol_y.config(command = self.playlist.yview)
-    # self.playlist.pack(side = TOP, fill = BOTH)
+    #for import the location of the songs folder
+    # os.chdir(PATH)
+    def list_songs(PATH):
+      songs_list = []
+      for root, dirs, files in os.walk(PATH):
+        for filename in files:
+          if os.path.splitext(filename)[1] == '.mp3':
+            name = os.path.join(root, filename)
+            song_name = name.split(str(PATH))[-1]
+            songs_list.append(song_name)
+      return songs_list
 
-    #for import the location of the songs folder
-    os.chdir(PATH)
-    songtracks = PATH.iterdir()
-    for track in songtracks:
-      if str(track).endswith('.mp3'):
-        self.playlist.insert(END, track)
-    #self.playlist.place(x = 0, y = 0, width = 1, height = 0.5)
+    songtracks = list_songs(PATH)
+    for tracks in songtracks:
+      if str(tracks).endswith('.mp3'):
+        # track = tracks.split('/')[-1]
+        self.playlist.insert(END, tracks)
     self.playlist.pack(side = TOP, fill = BOTH)
 
-  # def playsong(self):
-  #   current_song = self.playlist.get(ACTIVE)
-  #   self.track.set(current_song)
-  #   self.status.set("Playing")
-  #   playable_song = current_song.split('.')[0]
-  #   if os.path.exists(f'{playable_song}.ogg'):
-  #     playable_song = f'{playable_song}.ogg'
-  #     pygame.mixer.music.load(playable_song)
-  #     pygame.mixer.music.play()
-  #   else:
-  #     try:
-  #       s = subprocess.call(['ffmpeg', '-i', current_song, f'{playable_song}.ogg'])
-  #       if s == 0:
-  #         playable_song = f'{playable_song}.ogg'
-  #         pygame.mixer.music.load(playable_song)
-  #         pygame.mixer.music.play()
-  #       else:
-  #         print('u suck - conversion failed')
-  #     except Exception as e:
-  #       print(e)    
+    """
+   def playsong(self):
+     current_song = self.playlist.get(ACTIVE)
+     self.track.set(current_song)
+     self.status.set("Playing")
+     playable_song = current_song.split('.')[0]
+     if os.path.exists(f'{playable_song}.ogg'):
+       playable_song = f'{playable_song}.ogg'
+       pygame.mixer.music.load(playable_song)
+       pygame.mixer.music.play()
+     else:
+       try:
+         s = subprocess.call(['ffmpeg', '-i', current_song, f'{playable_song}.ogg'])
+         if s == 0:
+           playable_song = f'{playable_song}.ogg'
+           pygame.mixer.music.load(playable_song)
+           pygame.mixer.music.play()
+         else:
+           print('u suck - conversion failed')
+       except Exception as e:
+         print(e)
+      """
 
   def playsong(self) -> None:
     current_song = self.playlist.get(ACTIVE)
-    path_song = current_song.split()
+    current_song = str(PATH) + current_song
+    path_song = current_song.split('.mp3')
     song_name = path_song[0].split('/')[-1]
-    print(song_name)
     self.track.set(song_name)
     self.status.set("Playing")
     s = subprocess.call(['ftransc', '-f', 'ogg', current_song])
-    playable_song = current_song.split('.')[0]
-    print(playable_song)
+    playable_song = current_song.split('.mp3')[0]
     try:
       if s == 0:
         pygame.mixer.music.load(f'{playable_song}.ogg')
