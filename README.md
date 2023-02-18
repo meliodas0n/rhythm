@@ -9,3 +9,4 @@ run the file named "rhythm.py" to execute the project for urself.
 ![Screenshot](ss/ss1.png)
 
 
+![Screenshot](ss/ss2.png)
