@@ -83,8 +83,7 @@ class MusicPlayer:
     songsframe.place(x = WIDTH * 0, y = HEIGHT * 0, width = WIDTH * 1, height = HEIGHT * 0.5)
     self.playlist = Listbox(songsframe, selectbackground = "white", selectmode = SINGLE, font = ("times new roman", 12, "italic"), bg = "black", fg = "white", height = int(HEIGHT * 0.5), bd = 5, relief = GROOVE)
 
-    #for import the location of the songs folder
-    # os.chdir(PATH)
+    #for import the location of the songs folder
     def list_songs(PATH):
       songs_list = []
       for root, dirs, files in os.walk(PATH):
@@ -98,7 +97,6 @@ class MusicPlayer:
     songtracks = list_songs(PATH)
     for tracks in songtracks:
       if str(tracks).endswith('.mp3'):
-        # track = tracks.split('/')[-1]
         self.playlist.insert(END, tracks)
     self.playlist.pack(side = TOP, fill = BOTH)
 
@@ -173,8 +171,8 @@ class MusicPlayer:
       t.pack()
 
   def get_recommendation(self):
-#    recommendframe = LabelFrame(self.root, text = "Suggestions", font = ("times new roman", 18, "bold"), bg = "black", fg = "white", relief = GROOVE)
-#     recommendframe.place(x = WIDTH * 0.75, y = HEIGHT * 0.5, width = WIDTH * 0.25, height = HEIGHT * 0.5)
+#   recommendframe = LabelFrame(self.root, text = "Suggestions", font = ("times new roman", 18, "bold"), bg = "black", fg = "white", relief = GROOVE)
+#   recommendframe.place(x = WIDTH * 0.75, y = HEIGHT * 0.5, width = WIDTH * 0.25, height = HEIGHT * 0.5)
     inp = simpledialog.askstring("Song", "Please enter the name of the song : ")
     if inp:
       sp = spotipy.Spotify(client_credentials_manager = SpotifyClientCredentials("8179379b673642bfa740adba6d163b5c", "8b207d4a74984ddf81faf96c5d4c0c55"))
