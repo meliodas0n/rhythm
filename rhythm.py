@@ -25,7 +25,7 @@ import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
 
 #keys for lyrics extractor
-API_KEY = "AIzaSyAwNAeNy9OrcWkQFYMTh0gVmEQl1lB3FX"
+API_KEY = "AIzaSyAwNAeNy9OrcWkQFYMTh0gVmEQl1lB3FXo"
 CSE_KEY = "604928c7439f74806"
 
 root = Tk()
