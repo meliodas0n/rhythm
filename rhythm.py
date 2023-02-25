@@ -154,7 +154,6 @@ class MusicPlayer:
     myrecording = sd.rec(int(duration * fs), samplerate = fs, channels = 2)
     sd.wait()
     return sf.write('my_Audio_file1.flac',  myrecording, fs)
-    print("Recorded")
 
   def show_lyric(self):
     result = StringVar()
