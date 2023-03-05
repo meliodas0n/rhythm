@@ -1,7 +1,6 @@
 pygame
 wikipedia
 pathlib
-tk
 sounddevice
 soundfile
 lyrics_extractor
