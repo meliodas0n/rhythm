@@ -4,6 +4,7 @@
   TODO : fix lyrics frame not showing properly - have to add a scroll bar
   TODO : fix recommendation system
   TODO : add volume slider or some shit
+  TODO : dockerize the app
   TODO : FINAL - "make the app executable"
 """
 
