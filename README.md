@@ -11,3 +11,9 @@ run the file named "rhythm.py" to execute the project for urself.
 
 ### below screenshot includes the Song Suggestions that you might wanna check out :)
 ![Screenshot](ss/ss2.png)
+
+
+
+
+
+### P.S: I own everything please contact before use.
