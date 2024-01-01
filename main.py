@@ -1,5 +1,5 @@
-from tkinter import messagebox
 import customtkinter as ctk
+from helpers import CTkAlertDialog
 
 
 class App(ctk.CTk):
@@ -40,7 +40,7 @@ class MusicPlayer:
 class Utils:
     @staticmethod
     def on_closing_app():
-        if messagebox.askyesnocancel("QUIT", "Do you want to Quit?"):
+        if CTkAlertDialog(title="Close", text="Do you want to Quit?").get_state():
             app.destroy()
 
 
