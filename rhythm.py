@@ -6,7 +6,7 @@
   TODO : add volume slider or some shit
   TODO : dockerize the app
   TODO : FINAL - "make the app executable"
-  TODO : "MOVE EVERYTHING CUSTOM_TKINTER"
+  TODO : "MOVE EVERYTHING TO CUSTOM_TKINTER"
 """
 
 from tkinter import *
@@ -39,11 +39,11 @@ HEIGHT = 1080
 # HEIGHT = root.winfo_screenheight()
 
 leftframe = Frame(root)
-leftframe.place(x=WIDTH * 0, y=HEIGHT * 0, width=WIDTH * 0.75, heigh=HEIGHT)
+leftframe.place(x=WIDTH * 0, y=HEIGHT * 0, width=WIDTH * 0.75, height=HEIGHT)
 rightframe = Frame(root)
 rightframe.place(x=WIDTH * 0.75, y=HEIGHT * 0, width=WIDTH * 0.25, height=HEIGHT)
 
-PATH = pathlib.Path("/home/mashle/dev/projects/rhythm/music/")
+PATH = pathlib.Path(os.path.join(os.path.dirname(__file__), "music/"))
 
 
 class MusicPlayer:

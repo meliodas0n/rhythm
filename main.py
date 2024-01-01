@@ -15,7 +15,7 @@ class App(ctk.CTk):
         self.xsize = size[0] if size else 1920
         self.ysize = size[1] if size else 1080
         self.appearance_mode = (
-            appearance_mode if appearance_mode is not None else "System"
+            appearance_mode if appearance_mode is not None else "system"
         )
         self.color_theme = color_theme if color_theme is not None else "blue"
 
@@ -29,6 +29,46 @@ class App(ctk.CTk):
 class MusicPlayer:
     def __init__(self, app):
         self.app = app
+
+        WIDTH = self.app.xsize
+        HEIGHT = self.app.ysize
+
+        self.left_frame = ctk.CTkFrame(
+            self.app,
+            width=WIDTH * 0.75,
+            height=HEIGHT,
+            fg_color="white",
+            corner_radius=0,
+            border_color="black",
+        )
+        self.left_frame.place(
+            x=WIDTH * 0,
+            y=HEIGHT * 0,
+        )
+        self.right_frame = ctk.CTkFrame(
+            self.app,
+            width=WIDTH * 0.25,
+            height=HEIGHT,
+            fg_color="black",
+            corner_radius=0,
+            border_color="white",
+        )
+        self.right_frame.place(
+            x=WIDTH * 0.75,
+            y=HEIGHT * 0,
+        )
+
+    def track_frame(self):
+        pass
+
+    def button_frame(self):
+        pass
+
+    def list_frame(self):
+        pass
+
+    def recommend_frame(self):
+        pass
 
     def run(self):
         try:
@@ -46,6 +86,6 @@ class Utils:
 
 if __name__ == "__main__":
     app = App("Rhythm")
-    app.protocol("WM_DELETE_WINDOW", Utils.on_closing_app)
+    # app.protocol("WM_DELETE_WINDOW", Utils.on_closing_app)
     player = MusicPlayer(app)
     player.run()
