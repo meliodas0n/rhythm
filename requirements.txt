@@ -8,3 +8,4 @@ lyrics_extractor
 python-dotenv
 spotipy
 customtkinter
+packaging

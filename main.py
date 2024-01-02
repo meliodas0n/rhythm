@@ -30,36 +30,43 @@ class MusicPlayer:
     def __init__(self, app):
         self.app = app
 
-        WIDTH = self.app.xsize
-        HEIGHT = self.app.ysize
+        self.WIDTH = self.app.xsize
+        self.HEIGHT = self.app.ysize
 
         self.left_frame = ctk.CTkFrame(
             self.app,
-            width=WIDTH * 0.75,
-            height=HEIGHT,
+            width=self.WIDTH * 0.75,
+            height=self.HEIGHT,
             fg_color="white",
             corner_radius=0,
             border_color="black",
         )
         self.left_frame.place(
-            x=WIDTH * 0,
-            y=HEIGHT * 0,
+            x=self.WIDTH * 0,
+            y=self.HEIGHT * 0,
         )
         self.right_frame = ctk.CTkFrame(
             self.app,
-            width=WIDTH * 0.25,
-            height=HEIGHT,
+            width=self.WIDTH * 0.25,
+            height=self.HEIGHT,
             fg_color="black",
             corner_radius=0,
             border_color="white",
         )
         self.right_frame.place(
-            x=WIDTH * 0.75,
-            y=HEIGHT * 0,
+            x=self.WIDTH * 0.75,
+            y=self.HEIGHT * 0,
         )
 
+        self.track_frame()
+
     def track_frame(self):
-        pass
+        song_track_frame = ctk.CTkFrame(
+            master=self.left_frame,
+            width=self.WIDTH * 0.75,
+            height=self.HEIGHT * 0.875,
+        )
+        song_track_frame.place(x=self.WIDTH * 0, y=self.HEIGHT * 0)
 
     def button_frame(self):
         pass
