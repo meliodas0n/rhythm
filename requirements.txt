@@ -1,3 +1,4 @@
+wheel
 pygame
 wikipedia
 pathlib
@@ -6,3 +7,4 @@ soundfile
 lyrics_extractor
 python-dotenv
 spotipy
+customtkinter
