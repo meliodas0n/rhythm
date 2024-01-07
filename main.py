@@ -36,28 +36,34 @@ class MusicPlayer():
     self.left_frame.place(x = self.WIDTH * 0, y = self.HEIGHT * 0)
 
     # right side frame for song list and recommendation
-    self.right_frame = ctk.CTkFrame(self.app, width = self.WIDTH * 0.25, height = self.HEIGHT, fg_color = 'black', corner_radius = 0, border_color = 'white')
+    self.right_frame = ctk.CTkFrame(self.app, width = self.WIDTH * 0.25, height = self.HEIGHT, fg_color = 'white', corner_radius = 0, border_color = 'black')
     self.right_frame.place(x = self.WIDTH * 0.75, y = self.HEIGHT * 0)
 
     # call individual frames on the app
     self.track_frame()
+    self.control_panel()
+    self.list_frame()
+    self.recommend_frame()
 
   # frame for song track
   def track_frame(self):
-    song_track_frame = ctk.CTkFrame(self.left_frame, width = self.WIDTH * 0.75, height = self.HEIGHT * 0.875)
+    song_track_frame = ctk.CTkFrame(self.left_frame, width = self.WIDTH * 0.75, height = self.HEIGHT * 0.875, fg_color = "black", corner_radius = 0, border_color = "white")
     song_track_frame.place(x = self.WIDTH * 0, y = self.HEIGHT * 0)
 
   # frame for conttol panel to control the music
   def control_panel(self):
-    pass
+    control_panel_frame = ctk.CTkFrame(self.left_frame, width = self.WIDTH * 0.75, height = self.HEIGHT * 0.125, fg_color = "white", corner_radius = 0, border_color = "black")
+    control_panel_frame.place(x = self.WIDTH * 0, y = self.HEIGHT * 0.875)
 
   # song list frames
   def list_frame(self):
-    pass
+    song_list_frame = ctk.CTkFrame(self.right_frame, width = self.WIDTH * 0.25, height = self.HEIGHT * 0.5, fg_color = "white", corner_radius = 0, border_color = "black")
+    song_list_frame.place(x = self.WIDTH * 0.75, y = self.HEIGHT * 0)
 
   # recommendatiom frame
   def recommend_frame(self):
-    pass
+    song_recommendation_frame = ctk.CTkFrame(self.right_frame, width = self.WIDTH * 0.25, height = self.HEIGHT * 0.5, fg_color = "black", corner_radius = 0, border_color = "white")
+    song_recommendation_frame.place(x = self.WIDTH * 0.75, y = self.HEIGHT * 0.5)
 
   # run the app
   def run(self):
@@ -76,6 +82,6 @@ class Utils:
 
 if __name__ == "__main__":
   app = App("Rhythm")
-  app.protocol("WM_DELETE_WINDOW", Utils.on_closing_app)
+  # app.protocol("WM_DELETE_WINDOW", Utils.on_closing_app)
   player = MusicPlayer(app)
   player.run()
