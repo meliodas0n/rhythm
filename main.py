@@ -93,7 +93,7 @@ class Utils:
     
   @staticmethod
   def label_frame(frame, label = None, color = "black"):
-    return ctk.CTkLabel(frame, text = label, text_color = color, font = ctk.CTkFont(size=72, weight="bold")).place(x=0, y=0)
+    return ctk.CTkLabel(frame, text = label, text_color = color, font = ctk.CTkFont(size=36, weight="bold")).place(x=0, y=0)
 
 if __name__ == "__main__":
   app = App("Rhythm")
