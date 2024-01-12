@@ -36,12 +36,12 @@ class MusicPlayer():
     self.HEIGHT = self.app.ysize
 
     # left side frame to place the song-track and control panel to control the music
-    self.left_frame = ctk.CTkFrame(self.app, width = self.WIDTH * 0.75, height = self.HEIGHT, fg_color = 'white', corner_radius = 0, border_color = 'black')
-    self.left_frame.place(x = self.WIDTH * 0, y = self.HEIGHT * 0)
+    # self.left_frame = ctk.CTkFrame(self.app, width = self.WIDTH * 0.75, height = self.HEIGHT, fg_color = 'white', corner_radius = 0, border_color = 'black')
+    # self.left_frame.place(x = self.WIDTH * 0, y = self.HEIGHT * 0)
 
     # right side frame for song list and recommendation
-    self.right_frame = ctk.CTkFrame(self.app, width = self.WIDTH * 0.25, height = self.HEIGHT, fg_color = 'white', corner_radius = 0, border_color = 'black')
-    self.right_frame.place(x = self.WIDTH * 0.75, y = self.HEIGHT * 0)
+    # self.right_frame = ctk.CTkFrame(self.app, width = self.WIDTH * 0.25, height = self.HEIGHT, fg_color = 'white', corner_radius = 0, border_color = 'black')
+    # self.right_frame.place(x = self.WIDTH * 0.75, y = self.HEIGHT * 0)
 
     # call individual frames on the app
     self.track_frame()
@@ -51,30 +51,30 @@ class MusicPlayer():
 
   # frame for song track
   def track_frame(self):
-    song_track_frame = ctk.CTkFrame(self.left_frame, width = self.WIDTH * 0.75, height = self.HEIGHT * 0.875, fg_color = "black", corner_radius = 0, border_color = "white")
+    song_track_frame = ctk.CTkFrame(self.app, width = self.WIDTH * 0.75, height = self.HEIGHT * 0.875, fg_color = "black", corner_radius = 0, border_color = "white")
     song_track_frame.place(x = self.WIDTH * 0, y = self.HEIGHT * 0)
     song_track_frame = Utils.label_frame(song_track_frame, label = "Song Track", color = "white")
     return song_track_frame
 
   # frame for conttol panel to control the music
   def control_panel(self):
-    control_panel_frame = ctk.CTkFrame(self.left_frame, width = self.WIDTH * 0.75, height = self.HEIGHT * 0.125, fg_color = "white", corner_radius = 0, border_color = "black")
+    control_panel_frame = ctk.CTkFrame(self.app, width = self.WIDTH * 0.75, height = self.HEIGHT * 0.125, fg_color = "white", corner_radius = 0, border_color = "black")
     control_panel_frame.place(x = self.WIDTH * 0, y = self.HEIGHT * 0.875)
     control_panel_frame = Utils.label_frame(control_panel_frame, label = "Control Panel", color = "black")
     return control_panel_frame
 
   # song list frames
   def list_frame(self):
-    song_list_frame = ctk.CTkFrame(self.right_frame, width = self.WIDTH * 0.25, height = self.HEIGHT * 0.5, fg_color = "black", corner_radius = 25, border_color = "black")
+    song_list_frame = ctk.CTkFrame(self.app, width = self.WIDTH * 0.25, height = self.HEIGHT * 0.5, fg_color = "white", corner_radius = 0, border_color = "black")
     song_list_frame.place(x = self.WIDTH * 0.75, y = self.HEIGHT * 0)
     song_list_frame = Utils.label_frame(song_list_frame, label = "Song List", color = "black")
     return song_list_frame
 
   # recommendatiom frame
   def recommend_frame(self):
-    song_recommendation_frame = ctk.CTkFrame(self.right_frame, width = self.WIDTH * 0.25, height = self.HEIGHT * 0.5, fg_color = "white", corner_radius = 25, border_color = "white")
+    song_recommendation_frame = ctk.CTkFrame(self.app, width = self.WIDTH * 0.25, height = self.HEIGHT * 0.5, fg_color = "black", corner_radius = 0, border_color = "white")
     song_recommendation_frame.place(x = self.WIDTH * 0.75, y = self.HEIGHT * 0.5)
-    song_recommendation_frame = Utils.label_frame(song_recommendation_frame, label = "Recommendations", color = "black")
+    song_recommendation_frame = Utils.label_frame(song_recommendation_frame, label = "Recommendations", color = "white")
     return song_recommendation_frame
 
   # run the app
