@@ -1,6 +1,8 @@
+import os
+
 import customtkinter as ctk
 from helpers import CTkAlertDialog
-
+import tkinter as tk
 
 class App(ctk.CTk):
   def __init__(self, name = None, size = None, appearance_mode = None, color_theme = None):
@@ -27,9 +29,10 @@ class App(ctk.CTk):
     self.grid_columnconfigure(3, weight = 1)
 
 class MusicPlayer():
-  def __init__(self, app):
+  def __init__(self, app, music_dir):
     # assign app to musicplayer
     self.app = app
+    self.music_dir = music_dir
 
     # get resolution of app as width and height
     self.WIDTH = self.app.xsize
@@ -68,6 +71,13 @@ class MusicPlayer():
     song_list_frame = ctk.CTkFrame(self.app, width = self.WIDTH * 0.25, height = self.HEIGHT * 0.5, fg_color = "white", corner_radius = 0, border_color = "black")
     song_list_frame.place(x = self.WIDTH * 0.75, y = self.HEIGHT * 0)
     song_list_frame = Utils.label_frame(song_list_frame, label = "Song List", color = "black")
+    self.playlist = tk.Listbox(song_list_frame, selectmode = tk.SINGLE, width = int(self.WIDTH * 0.05), height = int(self.HEIGHT * 0.1))
+    songtracks = Utils.list_songs(self.music_dir)
+    for tracks in songtracks:
+      if str(tracks).endswith(".mp3"):
+        self.playlist.insert(tk.END, tracks)
+    # self.playlist.pack(side = tk.TOP, fill = tk.BOTH)
+    self.playlist.place(x = self.WIDTH * 0.76, y = self.HEIGHT * 0.03)
     return song_list_frame
 
   # recommendatiom frame
@@ -84,7 +94,6 @@ class MusicPlayer():
     except Exception as e:
       print(f"Unable to run Rhythm due to following: \n{e}")
 
-
 class Utils:
   @staticmethod
   def on_closing_app():
@@ -95,8 +104,17 @@ class Utils:
   def label_frame(frame, label = None, color = "black"):
     return ctk.CTkLabel(frame, text = label, text_color = color, font = ctk.CTkFont(size=36, weight="bold")).place(x=0, y=0)
 
+  @staticmethod
+  def list_songs(PATH):
+    songs_list = []
+    for root, dirs, files in os.walk(PATH):
+      for filename in files:
+        if os.path.splitext(filename)[1] == ".mp3":
+          songs_list.append(str(os.path.join(root, filename)).split(PATH)[-1])
+    return songs_list
+
 if __name__ == "__main__":
   app = App("Rhythm")
   # app.protocol("WM_DELETE_WINDOW", Utils.on_closing_app)
-  player = MusicPlayer(app)
+  player = MusicPlayer(app, "~/dev/rhythm/music/")
   player.run()
